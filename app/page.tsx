@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";;
 
 export default function WeddingInvitation() {
 
@@ -30,7 +30,36 @@ export default function WeddingInvitation() {
 
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+const sendRSVP = (response: string) => {
 
+  const nameInput = document.getElementById("guestName") as HTMLInputElement;
+
+  const name = nameInput.value;
+
+  if (!name) {
+    alert("Please enter your name");
+    return;
+  }
+
+
+  const message = 
+`Hello Ankit & Diksha,
+
+I am ${name}.
+
+My response:
+${response}
+
+Looking forward to celebrating with you!`;
+
+
+  const whatsappURL =
+    `https://wa.me/918867257280?text=${encodeURIComponent(message)}`;
+
+
+  window.open(whatsappURL, "_blank");
+
+};
 
   useEffect(() => {
 
@@ -152,7 +181,7 @@ export default function WeddingInvitation() {
 
 
           <EventCard
-            title="🌼 Jashn-e-Haldi"
+            title="🌼  Golden Beginnings"
             date="04 December 2026"
             time="10:00 AM"
           />
@@ -160,9 +189,9 @@ export default function WeddingInvitation() {
 
 
           <EventCard
-            title="🎶 Shaam-e-Sangeet"
-            date="Date Coming Soon"
-            time="Time Coming Soon"
+            title="🎶 A Night of Rhythm"
+            date="04 December 2026"
+            time="8:00 PM"
           />
 
 
@@ -189,8 +218,117 @@ export default function WeddingInvitation() {
 
 
 
+{/* PHOTO GALLERY */}
+
+<section className="py-20 bg-white">
+
+  <h2 className="text-5xl text-center font-serif mb-12">
+    Our Beautiful Moments
+  </h2>
 
 
+  <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 px-6">
+
+
+    <img
+      src="/images/photo1.jpeg"
+      alt="Wedding Moment"
+      className="rounded-2xl shadow-lg w-full h-80 object-cover"
+    />
+
+
+    <img
+      src="/images/photo2.jpeg"
+      alt="Wedding Moment"
+      className="rounded-2xl shadow-lg w-full h-80 object-cover"
+    />
+
+
+    <img
+      src="/images/photo3.jpeg"
+      alt="Wedding Moment"
+      className="rounded-2xl shadow-lg w-full h-80 object-cover"
+    />
+
+
+  </div>
+
+</section>
+{/* RSVP SECTION */}
+
+<section className="py-20 bg-[#fdfbf7]">
+
+  <h2 className="text-5xl text-center font-serif mb-12">
+    Will You Join Us? ❤️
+  </h2>
+
+
+  <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-lg p-8 mx-6">
+
+
+    <div className="mb-6">
+
+      <label className="block mb-2 font-semibold">
+        Your Name
+      </label>
+
+    <input
+  id="guestName"
+  type="text"
+  placeholder="Enter your name"
+  className="w-full border rounded-lg p-3"
+/>
+
+    </div>
+
+
+
+    <div className="mb-6">
+
+      <label className="block mb-4 font-semibold">
+        Kindly let us know your response
+      </label>
+
+
+      <div className="flex flex-col md:flex-row gap-4">
+
+
+        <button
+          onClick={() => sendRSVP("Delighted to attend ")}
+
+          className="bg-green-600 text-white px-6 py-3 rounded-full"
+        >
+          Delighted to attend 
+        </button>
+
+
+        <button
+         onClick={() => sendRSVP(" Sadly missing out on the joy")}
+          className="bg-rose-500 text-white px-6 py-3 rounded-full"
+        >
+           Sadly missing out on the joy
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+
+
+
+    <button
+      className="w-full bg-gray-900 text-white py-3 rounded-full"
+    >
+      Submit Response
+    </button>
+
+
+  </div>
+
+
+</section>
 
       {/* VENUE SECTION */}
 
