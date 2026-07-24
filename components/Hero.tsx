@@ -45,8 +45,7 @@ export default function Hero() {
 
       {/* Countdown */}
       <div className="mt-8 text-xl font-semibold text-red-600">
-        <Countdown />
-      </div>
+<Countdown targetDate="2026-12-05T12:30:00" />      </div>
 
 
       {/* Venue */}

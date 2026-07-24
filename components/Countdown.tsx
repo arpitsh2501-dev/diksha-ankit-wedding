@@ -1,54 +1,67 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { wedding } from "@/data/wedding";
 
-export default function Countdown() {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+type CountdownProps = {
+  targetDate: string;
+};
+
+export default function Countdown({ targetDate }: CountdownProps) {
+  const calculateTimeLeft = () => {
+    const difference = new Date(targetDate).getTime() - Date.now();
+
+    if (difference <= 0) {
+      return {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+      };
+    }
+
+    return {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / (1000 * 60)) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
+    };
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const weddingDate = new Date(wedding.date).getTime();
-      const now = new Date().getTime();
-
-      const difference = weddingDate - now;
-
-      if (difference <= 0) {
-        setTimeLeft({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-        });
-        return;
-      }
-
-      setTimeLeft({
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor(
-          (difference / (1000 * 60 * 60)) % 24
-        ),
-        minutes: Math.floor(
-          (difference / (1000 * 60)) % 60
-        ),
-        seconds: Math.floor(
-          (difference / 1000) % 60
-        ),
-      });
+    const interval = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+    return () => clearInterval(interval);
+  }, [targetDate]);
 
   return (
     <div>
-      {timeLeft.days} Days : {timeLeft.hours} Hours :{" "}
-      {timeLeft.minutes} Minutes : {timeLeft.seconds} Seconds
+      <h2>The Countdown Begins</h2>
+
+      <div style={{ display: "flex", gap: "20px" }}>
+        <div>
+          <h1>{timeLeft.days}</h1>
+          <p>Days</p>
+        </div>
+
+        <div>
+          <h1>{timeLeft.hours}</h1>
+          <p>Hours</p>
+        </div>
+
+        <div>
+          <h1>{timeLeft.minutes}</h1>
+          <p>Mins</p>
+        </div>
+
+        <div>
+          <h1>{timeLeft.seconds}</h1>
+          <p>Secs</p>
+        </div>
+      </div>
     </div>
   );
 }
