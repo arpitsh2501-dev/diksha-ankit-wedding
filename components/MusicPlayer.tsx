@@ -1,0 +1,4 @@
+"use client";
+
+import { useRef, useState } from "react";
+export default function MusicPlayer() { const audio = useRef<HTMLAudioElement>(null); const [playing, setPlaying] = useState(false); const toggle = async () => { if (!audio.current) return; if (playing) audio.current.pause(); else await audio.current.play().catch(() => undefined); setPlaying(!playing); }; return <><audio ref={audio} loop src="/music/wedding-song.mp3" /><button onClick={toggle} aria-label={playing ? "Pause music" : "Play music"} className="fixed bottom-5 right-5 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-[#b36b4a] text-sm text-white shadow-lg">{playing ? "Ⅱ" : "▶"}</button></>; }
