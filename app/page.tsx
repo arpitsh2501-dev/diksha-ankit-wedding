@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";;
-
+import React, { useEffect, useState, useRef } from "react";
+import { greatVibes, playfair } from "./fonts";
 export default function WeddingInvitation() {
 
   const weddingDate = new Date("2026-12-05T12:30:00").getTime();
@@ -30,9 +30,39 @@ export default function WeddingInvitation() {
 
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-const sendRSVP = (response: string) => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const nameInput = document.getElementById("guestName") as HTMLInputElement;
+const [isPlaying, setIsPlaying] = useState(false);
+useEffect(() => {
+  if (audioRef.current) {
+    audioRef.current.volume = 0.5;
+  }
+
+  const timer = setInterval(() => {
+    setTimeLeft(calculateTimeLeft());
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, []);
+const toggleMusic = async () => {
+  if (!audioRef.current) return;
+
+  try {
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      await audioRef.current.play();
+      setIsPlaying(true);
+    }
+  } catch (error) {
+    console.log("Music error:", error);
+  }
+};
+const sendRSVP = (response: string) => {
+  const nameInput = document.getElementById(
+    "guestName"
+  ) as HTMLInputElement;
 
   const name = nameInput.value;
 
@@ -41,9 +71,7 @@ const sendRSVP = (response: string) => {
     return;
   }
 
-
-  const message = 
-`Hello Ankit & Diksha,
+  const message = `Hello Ankit & Diksha,
 
 I am ${name}.
 
@@ -52,31 +80,29 @@ ${response}
 
 Looking forward to celebrating with you!`;
 
-
-  const whatsappURL =
-    `https://wa.me/918867257280?text=${encodeURIComponent(message)}`;
-
+  const whatsappURL = `https://wa.me/918867257280?text=${encodeURIComponent(message)}`;
 
   window.open(whatsappURL, "_blank");
-
 };
 
-  useEffect(() => {
 
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    },1000);
+    return (
 
-
-    return () => clearInterval(timer);
-
-  },[]);
+<main className="min-h-screen bg-[#FFF7FA] text-gray-800">
+      {/* MUSIC PLAYER */}
+<audio ref={audioRef} loop>
+  <source src="/music/wedding-song.mp3" type="audio/mpeg" />
+</audio>
 
 
+      <button
+        onClick={toggleMusic}
+        className="fixed top-5 right-5 z-50 bg-rose-500 text-white px-5 py-3 rounded-full shadow-lg"
+      >
+        {isPlaying ? "⏸ Pause Music" : "🎵 Play Music"}
+      </button>
 
-  return (
-
-    <main className="min-h-screen bg-gray-50 text-gray-800">
+  
 
 
       {/* HERO SECTION */}
@@ -95,19 +121,23 @@ Looking forward to celebrating with you!`;
         <div className="relative z-10 text-center text-white px-6">
 
 
-          <p className="uppercase tracking-widest text-sm mb-6">
-            Together with their families
-          </p>
+<img
+  src="/diksha-ankit-logo.png"
+  alt="Diksha ❤️ Ankit"
+  className="mx-auto w-40 mb-0"
+/>
 
+     <p
+ className={`${playfair.className} text-3xl md:text-5xl italic mb-8`}
+>
+  We’re getting married!
+</p>
 
-          <h1 className="text-6xl md:text-8xl font-serif mb-6">
-            Ankit ❤️ Diksha
-          </h1>
-
-
-          <p className="text-2xl italic mb-8">
-            Are getting married
-          </p>
+<h1
+  className={`${greatVibes.className} text-7xl md:text-9xl mb-4`}
+>
+  Ankit ❤️ Diksha
+</h1>
 
 
           <div className="border-y border-white/50 py-5 px-8 inline-block">
@@ -116,9 +146,6 @@ Looking forward to celebrating with you!`;
               05 December 2026
             </h2>
 
-            <p className="mt-2">
-              12:30 PM
-            </p>
 
           </div>
 
@@ -133,10 +160,8 @@ Looking forward to celebrating with you!`;
 
       {/* COUNTDOWN SECTION */}
 
-      <section className="py-20 bg-white text-center">
-
-
-        <h2 className="text-4xl font-serif mb-12">
+<section className="py-20 bg-[#E8F1FF] text-center">
+          <h2 className="text-4xl font-serif mb-12">
           The Countdown Begins
         </h2>
 
@@ -167,11 +192,11 @@ Looking forward to celebrating with you!`;
       {/* EVENTS SECTION */}
 
 
-      <section className="py-20 bg-[#fdfbf7]">
+<section className="py-20 bg-[#FCECEF]">
 
-
-        <h2 className="text-5xl text-center font-serif mb-12">
-          Wedding Events
+<h2
+ className={`${playfair.className} text-5xl text-center mb-12`}
+>          Wedding Events
         </h2>
 
 
@@ -220,9 +245,8 @@ Looking forward to celebrating with you!`;
 
 {/* PHOTO GALLERY */}
 
-<section className="py-20 bg-white">
-
-  <h2 className="text-5xl text-center font-serif mb-12">
+<section className="py-20 bg-[#D6F0FF]">
+    <h2 className="text-5xl text-center font-serif mb-12">
     Our Beautiful Moments
   </h2>
 
@@ -256,8 +280,7 @@ Looking forward to celebrating with you!`;
 </section>
 {/* RSVP SECTION */}
 
-<section className="py-20 bg-[#fdfbf7]">
-
+<section className="py-20 bg-[#FCECEF]">
   <h2 className="text-5xl text-center font-serif mb-12">
     Will You Join Us? ❤️
   </h2>
@@ -333,8 +356,7 @@ Looking forward to celebrating with you!`;
       {/* VENUE SECTION */}
 
 
-      <section className="py-20 bg-white text-center px-5">
-
+<section className="py-20 bg-[#6B9AC4] text-center px-5">
 
         <h2 className="text-5xl font-serif mb-10">
           Wedding Venue
@@ -387,8 +409,7 @@ Looking forward to celebrating with you!`;
       {/* FOOTER */}
 
 
-      <footer className="bg-gray-900 text-white text-center py-8">
-
+<footer className="bg-[#8B5E6B] text-white text-center py-8">
 
         <h3 className="text-2xl">
           We Can't Wait To Celebrate With You ❤️

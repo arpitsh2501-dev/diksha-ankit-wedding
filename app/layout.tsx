@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { lora } from "./fonts";
+
 
 export const metadata: Metadata = {
-  title: "Diksha & Ankit Wedding",
-  description: "Wedding Invitation Website",
+  title: "Ankit ❤️ Diksha Wedding",
+  description: "Wedding Invitation",
 };
+
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
+
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={lora.className}>
+        {children}
+      </body>
     </html>
   );
 }
